@@ -19,5 +19,5 @@ A web application for hosting auctions built with React and Flask.
 2. Install backend dependencies: `pip install -r backend/requirements.txt`
 3. Install frontend dependencies: `cd frontend && npm install`
 4. Start the development server: `npm start` in \auction-app runs both the backend and frontend,
-  or you can do `npm start` in \frontend and `python /app.py` in \backend
+  or you can do `npm start` in \frontend and `python app.py` in \backend
 
