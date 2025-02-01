@@ -1,0 +1,7 @@
+{
+    "name": "auction-app",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "concurrently \"cd backend && python app.py\" \"cd frontend && npm start\""
+    }
+  }
