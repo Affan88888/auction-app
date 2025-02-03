@@ -1,21 +1,24 @@
 /* src/components/Header.css */
 .header {
-  background-color: #007bff;
+  display: flex; /* Use Flexbox for layout */
+  justify-content: space-between; /* Space out logo and navigation */
+  align-items: center; /* Align items vertically in the center */
+  background-color: #007bff; /* Blue background */
   color: white;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 0.5rem; /* Add padding around the header */
 }
 
 .header h1 {
-  margin: 0;
+  margin-left: 6rem; /* Move the logo slightly to the right */
 }
 
 .header nav ul {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
+  display: flex; /* Use Flexbox for navigation links */
+  gap: 1rem; /* Add spacing between links */
+  margin-right: 2rem; /* Move the navigation links further to the left */
+  list-style: none; /* Remove bullet points */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
 }
 
 .header nav a {
@@ -24,7 +27,7 @@
   font-weight: bold;
   display: flex;
   align-items: center; /* Align icon and text vertically */
-  gap: 0.5rem; /* Add spacing between icon and text */
+  gap: 0.3rem; /* Add spacing between icon and text */
 }
 
 .header nav a:hover {

@@ -9,7 +9,7 @@
 .search-bar form {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Space between input and button */
+  gap: 0.25rem; /* Space between input and button */
 }
 
 .search-bar input {
