@@ -5,17 +5,20 @@
   align-items: center; /* Align items vertically in the center */
   background-color: #007bff; /* Blue background */
   color: white;
-  padding: 0.5rem; /* Add padding around the header */
+  padding: 0.25rem; /* Add padding around the header */
 }
 
 .header h1 {
-  margin-left: 6rem; /* Move the logo slightly to the right */
+  margin-left: 5vw; /* Move the logo slightly to the right */
+}
+
+.header nav {
+  margin-right: 5vw; /* Move the entire navigation menu to the left */
 }
 
 .header nav ul {
   display: flex; /* Use Flexbox for navigation links */
   gap: 1rem; /* Add spacing between links */
-  margin-right: 2rem; /* Move the navigation links further to the left */
   list-style: none; /* Remove bullet points */
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default padding */
@@ -27,7 +30,7 @@
   font-weight: bold;
   display: flex;
   align-items: center; /* Align icon and text vertically */
-  gap: 0.3rem; /* Add spacing between icon and text */
+  gap: 0.25rem; /* Add spacing between icon and text */
 }
 
 .header nav a:hover {
