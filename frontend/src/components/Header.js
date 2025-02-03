@@ -1,29 +1,47 @@
 // src/components/Header.js
 import React from 'react';
-import './Header.css';
+import './css/Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faUserPlus, faSignInAlt, faHome } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 function Header() {
   return (
     <header className="header">
-      <h1>Auction Website</h1>
+      {/* Logo and Title */}
+      <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <h1>AukcijeBH</h1>
+      </Link>
+
+      {/* Navigation Menu */}
       <nav>
         <ul>
+          {/* Home Link */}
           <li>
-            <a href="/">
-              <FontAwesomeIcon icon={faUser} /> Moje aukcije
-            </a>
+            <Link to="/">
+              <FontAwesomeIcon icon={faHome} /> Početna
+            </Link>
           </li>
+
+          {/* About Us Link */}
           <li>
-            <a href="/register">
+            <Link to="/onama">
+              <FontAwesomeIcon icon={faInfoCircle} /> O nama
+            </Link>
+          </li>
+
+          {/* Registration Link */}
+          <li>
+            <Link to="/register">
               <FontAwesomeIcon icon={faUserPlus} /> Registracija
-            </a>
+            </Link>
           </li>
+
+          {/* Login Link */}
           <li>
-            <a href="/login">
+            <Link to="/login">
               <FontAwesomeIcon icon={faSignInAlt} /> Prijava
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

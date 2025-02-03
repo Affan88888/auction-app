@@ -1,0 +1,14 @@
+/* src/components/About.css */
+.about-page {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .about-page h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .about-page p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }

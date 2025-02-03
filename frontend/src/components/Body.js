@@ -1,6 +1,6 @@
 // src/components/Body.js
 import React from 'react';
-import './Body.css';
+import './css/Body.css';
 
 function Body() {
   const items = [
