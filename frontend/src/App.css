@@ -1,11 +1,9 @@
 /* src/App.css */
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+.search-and-categories {
+  display: flex; /* Use Flexbox for horizontal alignment */
+  justify-content: center; /* Center the items horizontally */
+  align-items: center; /* Align items vertically in the center */
+  gap: 2rem; /* Add spacing between the dropdown and search bar */
+  padding: 1rem; /* Add padding around the container */
+  background-color: #f8f9fa; /* Light gray background */
 }

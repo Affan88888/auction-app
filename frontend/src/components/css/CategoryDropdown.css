@@ -1,0 +1,54 @@
+/* src/components/CategoryDropdown.css */
+.category-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-button {
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text */
+    border-radius: 4px;
+  }
+  
+  .dropdown-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%; /* Place below the button */
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
+    width: 200px; /* Adjust width as needed */
+    z-index: 10;
+  }
+  
+  .dropdown-item {
+    list-style: none;
+    padding: 0.5rem;
+  }
+  
+  .dropdown-item button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  
+  .dropdown-item button:hover {
+    background-color: #f8f9fa; /* Light gray background on hover */
+  }
