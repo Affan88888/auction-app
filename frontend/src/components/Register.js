@@ -1,6 +1,6 @@
 // src/components/Register.js
 import React, { useState } from 'react';
-import './css/Register.css'; // Optional: Add CSS for styling
+import './css/Register.css';
 import { Link } from 'react-router-dom';
 
 function Register() {
@@ -12,6 +12,8 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // To indicate loading state during submission
+  const [successMessage, setSuccessMessage] = useState(''); // To display success message
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,25 +46,50 @@ function Register() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with registration logic (e.g., API call)
-      alert('Registration successful!');
-      console.log('Registered User:', formData);
-      // Reset form after successful submission
-      setFormData({ username: '', email: '', password: '', confirmPassword: '' });
-      setErrors({});
+      try {
+        setLoading(true); // Show loading state
+        const response = await fetch('http://localhost:5000/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Registration Successful:', result);
+          setSuccessMessage('Registracija uspješna! Možete se prijaviti.');
+          setFormData({ username: '', email: '', password: '', confirmPassword: '' });
+          setErrors({});
+        } else {
+          const error = await response.json();
+          alert(`Greška prilikom registracije: ${error.message}`);
+        }
+      } catch (error) {
+        console.error('Error during registration:', error);
+        alert('Došlo je do greške prilikom registracije. Molimo pokušajte kasnije.');
+      } finally {
+        setLoading(false); // Hide loading state
+      }
     } else {
-      // Display validation errors
-      setErrors(validationErrors);
+      setErrors(validationErrors); // Display validation errors
     }
   };
 
   return (
     <div className="register-container">
       <h2>Registracija</h2>
+      {successMessage && <p className="success">{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         {/* Username Field */}
         <div className="form-group">
@@ -74,6 +101,7 @@ function Register() {
             value={formData.username}
             onChange={handleChange}
             placeholder="Unesite korisničko ime"
+            disabled={loading}
           />
           {errors.username && <span className="error">{errors.username}</span>}
         </div>
@@ -88,6 +116,7 @@ function Register() {
             value={formData.email}
             onChange={handleChange}
             placeholder="Unesite email"
+            disabled={loading}
           />
           {errors.email && <span className="error">{errors.email}</span>}
         </div>
@@ -102,6 +131,7 @@ function Register() {
             value={formData.password}
             onChange={handleChange}
             placeholder="Unesite lozinku"
+            disabled={loading}
           />
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
@@ -116,13 +146,14 @@ function Register() {
             value={formData.confirmPassword}
             onChange={handleChange}
             placeholder="Ponovite lozinku"
+            disabled={loading}
           />
           {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="btn-register">
-          Registruj se
+        <button type="submit" className="btn-register" disabled={loading}>
+          {loading ? 'Učitavanje...' : 'Registruj se'}
         </button>
       </form>
 
