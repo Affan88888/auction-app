@@ -1,6 +1,6 @@
 // src/components/CategoryDropdown.js
 import React, { useState } from 'react';
-import './css/CategoryDropdown.css'; // Import styles
+import './HomePage_css/CategoryDropdown.css'; // Import styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 

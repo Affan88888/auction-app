@@ -32,14 +32,14 @@ function Header() {
 
           {/* Registration Link */}
           <li>
-            <Link to="/register">
+            <Link to="/registracija">
               <FontAwesomeIcon icon={faUserPlus} /> Registracija
             </Link>
           </li>
 
           {/* Login Link */}
           <li>
-            <Link to="/login">
+            <Link to="/prijava">
               <FontAwesomeIcon icon={faSignInAlt} /> Prijava
             </Link>
           </li>
