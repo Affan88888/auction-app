@@ -67,6 +67,52 @@ def register():
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
 
+@app.route('/api/login', methods=['POST'])
+def login():
+    try:
+        # Get data from request
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+
+        # Validate input
+        if not email or not password:
+            return jsonify({'message': 'Email i lozinka su obavezni.'}), 400
+
+        # Connect to the database
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        # Check if the user exists
+        cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({'message': 'Korisnik ne postoji.'}), 401
+
+        # Verify the password
+        if not bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
+            return jsonify({'message': 'Pogrešna lozinka.'}), 401
+
+        # Login successful
+        return jsonify({
+            'message': 'Uspješna prijava.',
+            'user': {
+                'id': user['id'],
+                'username': user['username'],
+                'email': user['email'],
+                'role': user['role']
+            }
+        }), 200
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+
+    finally:
+        cursor.close()
+        connection.close()
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -31,7 +31,7 @@ function Register() {
     if (!formData.email.trim()) {
       newErrors.email = 'Email je obavezan.';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email je nevažeći..';
+      newErrors.email = 'Email je nevažeći.';
     }
     if (!formData.password.trim()) {
       newErrors.password = 'Lozinka je obavezna.';

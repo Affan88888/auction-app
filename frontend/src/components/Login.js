@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import './css/Login.css'; // Optional: Add CSS for styling
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -10,6 +10,8 @@ function Login() {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // To indicate loading state
+  const navigate = useNavigate(); // To redirect after successful login
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,29 +24,51 @@ function Login() {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required.';
+      newErrors.email = 'Email je obavezan.';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid.';
+      newErrors.email = 'Email je nevažeći.';
     }
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required.';
+      newErrors.password = 'Lozinka je obavezna.';
     }
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, proceed with login logic (e.g., API call)
-      alert('Login successful!');
-      console.log('Logged In User:', formData);
-      // Reset form after successful submission
-      setFormData({ email: '', password: '' });
-      setErrors({});
+      try {
+        setLoading(true); // Show loading state
+        const response = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Login Successful:', result);
+          alert('Prijava uspješna!');
+          navigate('/'); // Redirect to the home page after successful login
+        } else {
+          const error = await response.json();
+          alert(`Greška prilikom prijave: ${error.message}`);
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('Došlo je do greške prilikom prijave. Molimo pokušajte kasnije.');
+      } finally {
+        setLoading(false); // Hide loading state
+      }
     } else {
-      // Display validation errors
-      setErrors(validationErrors);
+      setErrors(validationErrors); // Display validation errors
     }
   };
 
@@ -62,6 +86,7 @@ function Login() {
             value={formData.email}
             onChange={handleChange}
             placeholder="Unesite email"
+            disabled={loading}
           />
           {errors.email && <span className="error">{errors.email}</span>}
         </div>
@@ -76,13 +101,14 @@ function Login() {
             value={formData.password}
             onChange={handleChange}
             placeholder="Unesite lozinku"
+            disabled={loading}
           />
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="btn-login">
-          Prijavi se
+        <button type="submit" className="btn-login" disabled={loading}>
+          {loading ? 'Učitavanje...' : 'Prijavi se'}
         </button>
       </form>
 
