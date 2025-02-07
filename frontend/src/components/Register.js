@@ -26,22 +26,22 @@ function Register() {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required.';
+      newErrors.username = 'Korisničko ime je obavezno.';
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required.';
+      newErrors.email = 'Email je obavezan.';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid.';
+      newErrors.email = 'Email je nevažeći..';
     }
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required.';
+      newErrors.password = 'Lozinka je obavezna.';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters long.';
+      newErrors.password = 'Lozinka mora imati najmanje 6 znakova.';
     }
     if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = 'Confirm Password is required.';
+      newErrors.confirmPassword = 'Potvrdite lozinku.';
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match.';
+      newErrors.confirmPassword = 'Lozinke se ne podudaraju.';
     }
     return newErrors;
   };

@@ -15,8 +15,10 @@ mycursor = db.cursor()
 
 #mycursor.execute("DESCRIBE Person")
 
-mycursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s,%s,%s)", ('john_doe', 'john@example.com', 'hashed_password'))
-db.commit()
+#mycursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s,%s,%s)", ('john_doe', 'john@example.com', 'hashed_password'))
+
+#mycursor.execute("DELETE FROM users")
+#db.commit()
 
 #mycursor.execute("SELECT * FROM Person")
 
