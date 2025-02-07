@@ -8,28 +8,31 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
+import { UserProvider } from './UserContext'; // Import the UserProvider
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="app">
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomeContent>
-                <Body />
-              </HomeContent>
-            }
-          />
-          <Route path="/onama" element={<About />} />
-          <Route path="/registracija" element={<Register />} />
-          <Route path="/prijava" element={<Login />} />
-        </Routes>
-        <Footer />
-      </div>
+      <UserProvider> {/* Wrap the app with UserProvider */}
+        <div className="app">
+          <Header />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomeContent>
+                  <Body />
+                </HomeContent>
+              }
+            />
+            <Route path="/onama" element={<About />} />
+            <Route path="/registracija" element={<Register />} />
+            <Route path="/prijava" element={<Login />} />
+          </Routes>
+          <Footer />
+        </div>
+      </UserProvider>
     </Router>
   );
 }

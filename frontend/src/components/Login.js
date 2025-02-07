@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './css/Login.css'; // Optional: Add CSS for styling
 import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext'; // Import the useUser hook
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false); // To indicate loading state
   const navigate = useNavigate(); // To redirect after successful login
+  const { login } = useUser(); // Use the login function from the context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +57,10 @@ function Login() {
         if (response.ok) {
           const result = await response.json();
           console.log('Login Successful:', result);
+
+          // Update the global user state
+          login(result.user);
+
           alert('Prijava uspješna!');
           navigate('/'); // Redirect to the home page after successful login
         } else {

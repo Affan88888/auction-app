@@ -2,10 +2,13 @@
 import React from 'react';
 import './css/Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faUserPlus, faSignInAlt, faHome } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { faInfoCircle, faUserPlus, faSignInAlt, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { useUser } from '../UserContext'; // Import the useUser hook
 
 function Header() {
+  const { user, logout } = useUser(); // Get the user and logout function from the context
+
   return (
     <header className="header">
       {/* Logo and Title */}
@@ -22,7 +25,6 @@ function Header() {
               <FontAwesomeIcon icon={faHome} /> Početna
             </Link>
           </li>
-
           {/* About Us Link */}
           <li>
             <Link to="/onama">
@@ -30,19 +32,38 @@ function Header() {
             </Link>
           </li>
 
-          {/* Registration Link */}
-          <li>
-            <Link to="/registracija">
-              <FontAwesomeIcon icon={faUserPlus} /> Registracija
-            </Link>
-          </li>
-
-          {/* Login Link */}
-          <li>
-            <Link to="/prijava">
-              <FontAwesomeIcon icon={faSignInAlt} /> Prijava
-            </Link>
-          </li>
+          {/* Conditional Rendering Based on Login Status */}
+          {user ? (
+            <>
+              {/* Display Username */}
+              <li>
+                <span>
+                  <strong>Dobrodošli, {user.username}!</strong>
+                </span>
+              </li>
+              {/* Logout Link */}
+              <li>
+                <button onClick={logout} className="logout-button">
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Odjava
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              {/* Registration Link */}
+              <li>
+                <Link to="/registracija">
+                  <FontAwesomeIcon icon={faUserPlus} /> Registracija
+                </Link>
+              </li>
+              {/* Login Link */}
+              <li>
+                <Link to="/prijava">
+                  <FontAwesomeIcon icon={faSignInAlt} /> Prijava
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
