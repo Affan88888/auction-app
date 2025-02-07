@@ -1,6 +1,6 @@
 // src/components/SearchBar.js
 import React, { useState } from 'react';
-import './css/SearchBar.css'; // Optional: Add styles for the SearchBar
+import './HomeContent_css/SearchBar.css'; // Optional: Add styles for the SearchBar
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');

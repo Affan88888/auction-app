@@ -2,11 +2,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import SearchBar from './components/SearchBar';
-import CategoryDropdown from './components/CategoryDropdown'; // Import the new CategoryDropdown component
-import Body from './components/Body';
 import Footer from './components/Footer';
 import About from './components/About';
+import Register from './components/Register';
+import Body from './components/HomeContent/Body';
+import HomeContent from './components/HomeContent/HomeContent'; // Import the new HomeContent component
 import './App.css';
 
 function App() {
@@ -14,14 +14,18 @@ function App() {
     <Router>
       <div className="app">
         <Header />
-        {/* Container for CategoryDropdown and SearchBar */}
-        <div className="search-and-categories">
-          <CategoryDropdown /> {/* Kategorije button on the left */}
-          <SearchBar />       {/* Search bar on the right */}
-        </div>
+        {/* Wrap the home page route with HomeContent */}
         <Routes>
-          <Route path="/" element={<Body />} />
+          <Route
+            path="/"
+            element={
+              <HomeContent>
+                <Body />
+              </HomeContent>
+            }
+          />
           <Route path="/onama" element={<About />} />
+          <Route path="/registracija" element={<Register />} />
         </Routes>
         <Footer />
       </div>
