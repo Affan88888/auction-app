@@ -1,4 +1,5 @@
-/* src/components/Header.css */
+/* src/components/css/Header.css */
+
 .header {
   display: flex; /* Use Flexbox for layout */
   justify-content: space-between; /* Space out logo and navigation */
@@ -35,4 +36,32 @@
 
 .header nav a:hover {
   text-decoration: underline;
+}
+
+/* Style for the logout button */
+.header nav .logout-button {
+  background: none; /* No background color */
+  border: none; /* No border */
+  color: white; /* Text color matches other links */
+  font-weight: bold; /* Make the text bold */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Use Flexbox for alignment */
+  align-items: center; /* Align icon and text vertically */
+  gap: 0.25rem; /* Add spacing between icon and text (increased from 0.25rem) */
+  font-size: 0.97rem; /* Increase font size (18px) */
+  padding: 0.15rem; /* Add padding to increase the clickable area */
+}
+
+/* Hover effect for the logout button */
+.header nav .logout-button:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for the welcome message */
+.header nav .welcome-message {
+  font-weight: bold; /* Keep the text bold */
+  background-color: #0056b3; /* Add a darker blue background for contrast */
+  padding: 0rem 0.75rem; /* Add padding to create space around the text */
+  border-radius: 4px; /* Add rounded corners for a cleaner look */
+  display: flex; /* Use Flexbox for alignment */
 }

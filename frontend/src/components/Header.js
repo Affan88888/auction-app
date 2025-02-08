@@ -37,7 +37,7 @@ function Header() {
             <>
               {/* Display Username */}
               <li>
-                <span>
+                <span className="welcome-message">
                   <strong>Dobrodošli, {user.username}!</strong>
                 </span>
               </li>
