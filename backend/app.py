@@ -42,7 +42,7 @@ def register():
 
         # Connect to the database
         connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
 
         # Check if the email already exists
         cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
@@ -57,16 +57,29 @@ def register():
         )
         connection.commit()
 
+        # Fetch the newly created user
+        cursor.execute('SELECT id, username, email, role FROM users WHERE email = %s', (email,))
+        new_user = cursor.fetchone()
+
         # Close the database connection
         cursor.close()
         connection.close()
 
-        return jsonify({'message': 'Korisnik uspješno registrovan.'}), 201
+        # Return the new user details
+        return jsonify({
+            'message': 'Korisnik uspješno registrovan.',
+            'user': {
+                'id': new_user['id'],
+                'username': new_user['username'],
+                'email': new_user['email'],
+                'role': new_user['role']
+            }
+        }), 201
 
     except Error as e:
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
-
+    
 @app.route('/api/login', methods=['POST'])
 def login():
     try:

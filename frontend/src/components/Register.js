@@ -1,7 +1,8 @@
 // src/components/Register.js
 import React, { useState } from 'react';
 import './css/Register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext'; // Import the useUser hook
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -13,7 +14,8 @@ function Register() {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false); // To indicate loading state during submission
-  const [successMessage, setSuccessMessage] = useState(''); // To display success message
+  const navigate = useNavigate(); // To redirect after registration
+  const { login } = useUser(); // Use the login function from the context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,9 +70,12 @@ function Register() {
         if (response.ok) {
           const result = await response.json();
           console.log('Registration Successful:', result);
-          setSuccessMessage('Registracija uspješna! Možete se prijaviti.');
-          setFormData({ username: '', email: '', password: '', confirmPassword: '' });
-          setErrors({});
+
+          // Automatically log in the user
+          login(result.user);
+
+          // Redirect to the home page
+          navigate('/');
         } else {
           const error = await response.json();
           alert(`Greška prilikom registracije: ${error.message}`);
@@ -89,7 +94,6 @@ function Register() {
   return (
     <div className="register-container">
       <h2>Registracija</h2>
-      {successMessage && <p className="success">{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         {/* Username Field */}
         <div className="form-group">
