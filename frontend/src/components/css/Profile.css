@@ -1,0 +1,24 @@
+/* src/components/css/Profile.css */
+
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .profile-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .profile-info p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .profile-info strong {
+    font-weight: bold;
+  }

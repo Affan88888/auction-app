@@ -126,6 +126,47 @@ def login():
         cursor.close()
         connection.close()
 
+@app.route('/api/profile', methods=['GET', 'POST'])
+def get_profile():
+    try:
+        # Get the user's email from the request headers or body (if using tokens)
+        # For simplicity, we'll assume the frontend sends the email in the request body
+        data = request.json
+        email = data.get('email')
+
+        # Validate input
+        if not email:
+            return jsonify({'message': 'Email je obavezan.'}), 400
+
+        # Connect to the database
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        # Fetch the user's profile
+        cursor.execute('SELECT id, username, email, role FROM users WHERE email = %s', (email,))
+        user = cursor.fetchone()
+
+        # Close the database connection
+        cursor.close()
+        connection.close()
+
+        if not user:
+            return jsonify({'message': 'Korisnik ne postoji.'}), 404
+
+        # Return the user's profile
+        return jsonify({
+            'user': {
+                'id': user['id'],
+                'username': user['username'],
+                'email': user['email'],
+                'role': user['role']
+            }
+        }), 200
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
