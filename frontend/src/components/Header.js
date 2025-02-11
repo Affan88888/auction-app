@@ -2,9 +2,9 @@
 import React from 'react';
 import './css/Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faUserPlus, faSignInAlt, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faUserPlus, faSignInAlt, faHome, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useUser } from '../UserContext'; // Import the useUser hook
+import { useUser } from '../UserContext';
 
 function Header() {
   const { user, logout } = useUser(); // Get the user and logout function from the context
@@ -25,6 +25,7 @@ function Header() {
               <FontAwesomeIcon icon={faHome} /> Početna
             </Link>
           </li>
+
           {/* About Us Link */}
           <li>
             <Link to="/onama">
@@ -41,6 +42,14 @@ function Header() {
                   <strong>Dobrodošli, {user.username}!</strong>
                 </span>
               </li>
+
+              {/* Your Profile Link */}
+              <li>
+                <Link to="/yourprofile" className="styled-link">
+                  <FontAwesomeIcon icon={faUser} /> Moj profil
+                </Link>
+              </li>
+
               {/* Logout Link */}
               <li>
                 <button onClick={logout} className="logout-button">
@@ -52,13 +61,14 @@ function Header() {
             <>
               {/* Registration Link */}
               <li>
-                <Link to="/registracija">
+                <Link to="/registracija" className="styled-link">
                   <FontAwesomeIcon icon={faUserPlus} /> Registracija
                 </Link>
               </li>
+
               {/* Login Link */}
               <li>
-                <Link to="/prijava">
+                <Link to="/prijava" className="styled-link">
                   <FontAwesomeIcon icon={faSignInAlt} /> Prijava
                 </Link>
               </li>

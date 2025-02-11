@@ -6,9 +6,10 @@ import Footer from './components/Footer';
 import About from './components/About';
 import Register from './components/Register';
 import Login from './components/Login';
+import Profile from './components/Profile';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
-import { UserProvider } from './UserContext'; // Import the UserProvider
+import { UserProvider } from './UserContext';
 import './App.css';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/onama" element={<About />} />
             <Route path="/registracija" element={<Register />} />
             <Route path="/prijava" element={<Login />} />
+            <Route path="/yourprofile" element={<Profile />} />
           </Routes>
           <Footer />
         </div>
