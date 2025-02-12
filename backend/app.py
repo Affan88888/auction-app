@@ -166,6 +166,42 @@ def get_profile():
     except Error as e:
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+    
+@app.route('/api/create-auction', methods=['POST'])
+def create_auction():
+    try:
+        # Get data from request
+        data = request.json
+        title = data.get('title')
+        description = data.get('description')
+        starting_price = data.get('startingPrice')
+        end_date = data.get('endDate')
+
+        # Validate input
+        if not title or not description or not starting_price or not end_date:
+            return jsonify({'message': 'Svi podaci su obavezni.'}), 400
+
+        # Connect to the database
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        # Insert the auction into the database
+        cursor.execute(
+            'INSERT INTO auctions (title, description, starting_price, end_date, created_at) VALUES (%s, %s, %s, %s, NOW())',
+            (title, description, starting_price, end_date)
+        )
+        connection.commit()
+
+        # Close the database connection
+        cursor.close()
+        connection.close()
+
+        return jsonify({'message': 'Aukcija uspješno kreirana.'}), 201
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+
 
 # Run the Flask app
 if __name__ == '__main__':

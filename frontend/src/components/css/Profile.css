@@ -22,3 +22,21 @@
   .profile-info strong {
     font-weight: bold;
   }
+
+  .profile-actions {
+    margin-top: 20px;
+  }
+  
+  .create-auction-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .create-auction-button:hover {
+    background-color: #0056b3;
+  }

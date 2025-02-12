@@ -7,6 +7,7 @@ import About from './components/About';
 import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import NapraviAukciju from './components/NapraviAukciju';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
 import { UserProvider } from './UserContext';
@@ -31,6 +32,7 @@ function App() {
             <Route path="/registracija" element={<Register />} />
             <Route path="/prijava" element={<Login />} />
             <Route path="/yourprofile" element={<Profile />} />
+            <Route path="/napraviAukciju" element={<NapraviAukciju />} />
           </Routes>
           <Footer />
         </div>

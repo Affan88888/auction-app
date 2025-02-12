@@ -1,5 +1,6 @@
 // src/components/Profile.js
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import './css/Profile.css'; // Optional: Add CSS for styling
 import { useUser } from '../UserContext'; // Import the useUser hook
 
@@ -19,7 +20,6 @@ function Profile() {
           },
           body: JSON.stringify({ email: user.email }), // Send the user's email
         });
-
         if (response.ok) {
           const result = await response.json();
           setProfileData(result.user);
@@ -32,7 +32,6 @@ function Profile() {
         setLoading(false); // Hide loading state
       }
     };
-
     if (user) {
       fetchProfile();
     }
@@ -52,8 +51,17 @@ function Profile() {
       <div className="profile-info">
         <p><strong>Korisničko ime:</strong> {profileData.username}</p>
         <p><strong>Email:</strong> {profileData.email}</p>
-        <p><strong>Rola:</strong> {profileData.role}</p>
+        <p><strong>Akaunt:</strong> {profileData.role}</p>
       </div>
+
+      {/* Show "Napravi aukciju" button only for admin users */}
+      {profileData.role === 'admin' && (
+        <div className="profile-actions">
+          <Link to="/napraviAukciju" className="create-auction-button">
+            Napravi aukciju
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
