@@ -201,6 +201,28 @@ def create_auction():
     except Error as e:
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+    
+
+@app.route('/api/auctions', methods=['GET'])
+def get_auctions():
+    try:
+        # Connect to the database
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        # Fetch all auctions from the database
+        cursor.execute('SELECT * FROM auctions')
+        auctions = cursor.fetchall()
+
+        # Close the database connection
+        cursor.close()
+        connection.close()
+
+        return jsonify({'auctions': auctions}), 200
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
 
 
 # Run the Flask app
