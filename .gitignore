@@ -20,3 +20,9 @@ frontend/node_modules/
 
 # Ignore .env file in the backend directory
 /backend/.env
+
+# Ignore all files inside static/uploads/
+/backend/static/uploads/*
+
+# Except for the .gitkeep file
+!/backend/static/uploads/.gitkeep
