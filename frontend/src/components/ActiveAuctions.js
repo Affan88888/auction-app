@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './css/ActiveAuctions.css'; // Optional: Add CSS for styling
 
-function ActiveAuctions() {
+function ActiveAuctions({ addNewAuction }) {
   const [auctions, setAuctions] = useState([]); // State to store active auctions
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -48,6 +48,13 @@ function ActiveAuctions() {
       alert('Došlo je do greške prilikom brisanja aukcije.');
     }
   };
+
+  // Add a new auction to the list dynamically
+  useEffect(() => {
+    if (addNewAuction) {
+      setAuctions((prevAuctions) => [...prevAuctions, addNewAuction]);
+    }
+  }, [addNewAuction]);
 
   if (loading) {
     return <div className="active-auctions">Učitavanje aktivnih aukcija...</div>;

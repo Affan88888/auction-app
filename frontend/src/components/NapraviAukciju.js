@@ -15,6 +15,7 @@ function NapraviAukciju() {
     endDate: '',
     images: [], // Store selected files
   });
+  const [newAuction, setNewAuction] = useState(null); // State to track the newly created auction
 
   // Redirect non-admin users away from this page
   if (user?.role !== 'admin') {
@@ -60,6 +61,15 @@ function NapraviAukciju() {
       });
 
       if (response.ok) {
+        const result = await response.json();
+        const createdAuction = {
+          id: result.auction_id,
+          title: formData.title,
+          description: formData.description,
+          starting_price: formData.startingPrice,
+          end_date: formData.endDate,
+        };
+        setNewAuction(createdAuction); // Track the newly created auction
         alert('Aukcija uspješno kreirana!');
         setFormData({
           title: '',
@@ -134,8 +144,8 @@ function NapraviAukciju() {
         </button>
       </form>
 
-      {/* Render the ActiveAuctions component */}
-      <ActiveAuctions />
+      {/* Render the ActiveAuctions component and pass the new auction */}
+      <ActiveAuctions addNewAuction={newAuction} />
     </div>
   );
 }
