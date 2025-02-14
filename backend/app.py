@@ -6,6 +6,7 @@ import bcrypt
 from flask_cors import CORS 
 from dotenv import load_dotenv
 import os
+from werkzeug.utils import secure_filename
 
 # Load environment variables
 load_dotenv()
@@ -167,11 +168,20 @@ def get_profile():
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
     
+# Configure file upload settings
+UPLOAD_FOLDER = 'static/uploads'  # Directory to store uploaded images
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS    
+    
 @app.route('/api/create-auction', methods=['POST'])
 def create_auction():
     try:
         # Get data from request
-        data = request.json
+        data = request.form
         title = data.get('title')
         description = data.get('description')
         starting_price = data.get('startingPrice')
@@ -180,6 +190,17 @@ def create_auction():
         # Validate input
         if not title or not description or not starting_price or not end_date:
             return jsonify({'message': 'Svi podaci su obavezni.'}), 400
+
+        # Handle file uploads
+        files = request.files.getlist('images')  # Get list of uploaded files
+        image_urls = []
+
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                image_urls.append(file_path)
 
         # Connect to the database
         connection = mysql.connector.connect(**db_config)
@@ -190,13 +211,22 @@ def create_auction():
             'INSERT INTO auctions (title, description, starting_price, end_date, created_at) VALUES (%s, %s, %s, %s, NOW())',
             (title, description, starting_price, end_date)
         )
+        auction_id = cursor.lastrowid  # Get the ID of the newly created auction
+
+        # Insert image URLs into the auction_images table
+        for image_url in image_urls:
+            cursor.execute(
+                'INSERT INTO auction_images (auction_id, image_url) VALUES (%s, %s)',
+                (auction_id, image_url)
+            )
+
         connection.commit()
 
         # Close the database connection
         cursor.close()
         connection.close()
 
-        return jsonify({'message': 'Aukcija uspješno kreirana.'}), 201
+        return jsonify({'message': 'Aukcija uspješno kreirana.', 'auction_id': auction_id}), 201
 
     except Error as e:
         print(f"Database error: {e}")
@@ -206,15 +236,23 @@ def create_auction():
 @app.route('/api/auctions', methods=['GET'])
 def get_auctions():
     try:
-        # Connect to the database
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
 
-        # Fetch all auctions from the database
-        cursor.execute('SELECT * FROM auctions')
+        # Fetch auctions and their images
+        cursor.execute('''
+            SELECT a.id, a.title, a.description, a.starting_price, a.end_date, GROUP_CONCAT(ai.image_url) AS images
+            FROM auctions a
+            LEFT JOIN auction_images ai ON a.id = ai.auction_id
+            GROUP BY a.id
+        ''')
         auctions = cursor.fetchall()
 
-        # Close the database connection
+        # Split image URLs into arrays and prepend the base URL
+        base_url = request.host_url  # Get the base URL of the server (e.g., http://localhost:5000/)
+        for auction in auctions:
+            auction['images'] = [f"{base_url}{img}" for img in auction['images'].split(',')] if auction['images'] else []
+
         cursor.close()
         connection.close()
 
@@ -223,7 +261,6 @@ def get_auctions():
     except Error as e:
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
-
 
 # Run the Flask app
 if __name__ == '__main__':

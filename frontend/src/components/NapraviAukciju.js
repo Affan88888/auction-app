@@ -12,6 +12,7 @@ function NapraviAukciju() {
     description: '',
     startingPrice: '',
     endDate: '',
+    images: [], // Store selected files
   });
 
   // Redirect non-admin users away from this page
@@ -29,17 +30,32 @@ function NapraviAukciju() {
     }));
   };
 
+  // Handle file input changes
+  const handleFileChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      images: Array.from(e.target.files), // Convert FileList to array
+    }));
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      const formDataToSend = new FormData(); // Use FormData to send files
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('startingPrice', formData.startingPrice);
+      formDataToSend.append('endDate', formData.endDate);
+
+      // Append images to FormData
+      formData.images.forEach((file, index) => {
+        formDataToSend.append('images', file);
+      });
+
       const response = await fetch('http://localhost:5000/api/create-auction', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend, // Send FormData instead of JSON
       });
 
       if (response.ok) {
@@ -49,6 +65,7 @@ function NapraviAukciju() {
           description: '',
           startingPrice: '',
           endDate: '',
+          images: [],
         });
       } else {
         alert('Došlo je do greške prilikom kreiranja aukcije.');
@@ -62,7 +79,7 @@ function NapraviAukciju() {
   return (
     <div className="create-auction-container">
       <h2>Kreiraj novu aukciju</h2>
-      <form onSubmit={handleSubmit} className="create-auction-form">
+      <form onSubmit={handleSubmit} className="create-auction-form" encType="multipart/form-data">
         <label>
           Naslov:
           <input
@@ -100,6 +117,15 @@ function NapraviAukciju() {
             value={formData.endDate}
             onChange={handleChange}
             required
+          />
+        </label>
+        <label>
+          Slike proizvoda:
+          <input
+            type="file"
+            name="images"
+            multiple // Allow multiple file uploads
+            onChange={handleFileChange}
           />
         </label>
         <button type="submit" className="submit-button">

@@ -47,6 +47,21 @@ function Body() {
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <p>Početna cijena: ${item.starting_price}</p>
+              {/* Display images */}
+              {item.images && item.images.length > 0 ? (
+                <div className="item-images">
+                  {item.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={item.title}
+                      className="item-image"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p>Nema slika za ovu aukciju.</p>
+              )}
               <button className="btn">Postavi ponudu</button>
             </div>
           ))

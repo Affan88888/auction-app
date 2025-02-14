@@ -10,15 +10,13 @@ db = mysql.connector.connect(
 mycursor = db.cursor()
 
 #create_table_query = """
-#        CREATE TABLE IF NOT EXISTS auctions (
-#            id INT AUTO_INCREMENT PRIMARY KEY,
-#            title VARCHAR(255) NOT NULL,
-#            description TEXT NOT NULL,
-#            starting_price DECIMAL(10, 2) NOT NULL,
-#            end_date DATETIME NOT NULL,
-#            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-#        );
-#        """
+#         CREATE TABLE auction_images (
+#           id INT AUTO_INCREMENT PRIMARY KEY,
+#            auction_id INT NOT NULL,
+#            image_url VARCHAR(255) NOT NULL,
+#            FOREIGN KEY (auction_id) REFERENCES auctions(id) ON DELETE CASCADE
+#         )
+#       """
 
 #mycursor.execute(create_table_query)
 
