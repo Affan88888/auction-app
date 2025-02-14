@@ -1,22 +1,16 @@
 # Ignore Python virtual environment
 venv/
 __pycache__/
-
 # Ignore Flask database files
 auction.db
-
 # Ignore React build files
 frontend/build/
-
 # Ignore Node.js dependencies
 frontend/node_modules/
-
 # Ignore IDE-specific files
 .vscode/
 .idea/
-
 # Ignore OS-specific files
 .DS_Store
-
 # Ignore .env file in the backend directory
 /backend/.env
