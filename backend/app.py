@@ -262,6 +262,29 @@ def get_auctions():
         print(f"Database error: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
 
+@app.route('/api/auctions/<int:auction_id>', methods=['DELETE'])
+def delete_auction(auction_id):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        # Delete associated images first
+        cursor.execute('DELETE FROM auction_images WHERE auction_id = %s', (auction_id,))
+
+        # Delete the auction itself
+        cursor.execute('DELETE FROM auctions WHERE id = %s', (auction_id,))
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify({'message': 'Aukcija uspješno izbrisana.'}), 200
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

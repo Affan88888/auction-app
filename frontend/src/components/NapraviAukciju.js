@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useUser } from '../UserContext'; // Import the useUser hook
 import { useNavigate } from 'react-router-dom'; // For redirection
 import './css/NapraviAukciju.css'; // Optional: Add CSS for styling
+import ActiveAuctions from './ActiveAuctions'; // Import the ActiveAuctions component
 
 function NapraviAukciju() {
   const { user } = useUser(); // Get the user from the context
@@ -132,6 +133,9 @@ function NapraviAukciju() {
           Kreiraj aukciju
         </button>
       </form>
+
+      {/* Render the ActiveAuctions component */}
+      <ActiveAuctions />
     </div>
   );
 }

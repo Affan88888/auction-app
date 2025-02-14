@@ -1,0 +1,35 @@
+/* src/components/css/ActiveAuctions.css */
+
+.active-auctions {
+    margin-top: 30px;
+  }
+  
+  .auctions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .auctions-table th,
+  .auctions-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .auctions-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    background-color: #b02a37;
+  }
