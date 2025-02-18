@@ -28,11 +28,11 @@ function App() {
                 </HomeContent>
               }
             />
-            <Route path="/onama" element={<About />} />
+            <Route path="/o-nama" element={<About />} />
             <Route path="/registracija" element={<Register />} />
             <Route path="/prijava" element={<Login />} />
-            <Route path="/yourprofile" element={<Profile />} />
-            <Route path="/napraviAukciju" element={<NapraviAukciju />} />
+            <Route path="/moj-profil" element={<Profile />} />
+            <Route path="/admin-stranica" element={<NapraviAukciju />} />
           </Routes>
           <Footer />
         </div>

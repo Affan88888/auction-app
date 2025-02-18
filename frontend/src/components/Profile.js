@@ -57,8 +57,8 @@ function Profile() {
       {/* Show "Napravi aukciju" button only for admin users */}
       {profileData.role === 'admin' && (
         <div className="profile-actions">
-          <Link to="/napraviAukciju" className="create-auction-button">
-            Napravi aukciju
+          <Link to="/admin-stranica" className="create-auction-button">
+            Admin stranica
           </Link>
         </div>
       )}

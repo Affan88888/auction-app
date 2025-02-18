@@ -28,7 +28,7 @@ function Header() {
 
           {/* About Us Link */}
           <li>
-            <Link to="/onama">
+            <Link to="/o-nama">
               <FontAwesomeIcon icon={faInfoCircle} /> O nama
             </Link>
           </li>
@@ -45,7 +45,7 @@ function Header() {
 
               {/* Your Profile Link */}
               <li>
-                <Link to="/yourprofile" className="styled-link">
+                <Link to="/moj-profil" className="styled-link">
                   <FontAwesomeIcon icon={faUser} /> Moj profil
                 </Link>
               </li>
