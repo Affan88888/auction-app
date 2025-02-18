@@ -7,7 +7,7 @@ import About from './components/About';
 import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
-import NapraviAukciju from './components/NapraviAukciju';
+import NapraviAukciju from './components/AdminPage/NapraviAukciju';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
 import { UserProvider } from './UserContext';

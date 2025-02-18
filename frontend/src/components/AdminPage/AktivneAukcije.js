@@ -1,6 +1,6 @@
 // src/components/ActiveAuctions.js
 import React, { useEffect, useState } from 'react';
-import './css/ActiveAuctions.css'; // Optional: Add CSS for styling
+import './AdminPage_css/AktivneAukcije.css'; // Optional: Add CSS for styling
 
 function ActiveAuctions({ addNewAuction }) {
   const [auctions, setAuctions] = useState([]); // State to store active auctions

@@ -1,9 +1,9 @@
 // src/components/NapraviAukciju.js
 import React, { useState } from 'react';
-import { useUser } from '../UserContext'; // Import the useUser hook
+import { useUser } from '../../UserContext'; // Import the useUser hook
 import { useNavigate } from 'react-router-dom'; // For redirection
-import './css/NapraviAukciju.css'; // Optional: Add CSS for styling
-import ActiveAuctions from './ActiveAuctions'; // Import the ActiveAuctions component
+import './AdminPage_css/NapraviAukciju.css'; // Optional: Add CSS for styling
+import ActiveAuctions from './AktivneAukcije'; // Import the ActiveAuctions component
 
 function NapraviAukciju() {
   const { user } = useUser(); // Get the user from the context
