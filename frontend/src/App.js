@@ -10,6 +10,7 @@ import Profile from './components/Profile';
 import NapraviAukciju from './components/AdminPage/NapraviAukciju';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
+import AuctionDetails from './components/AuctionDetails';
 import { UserProvider } from './UserContext';
 import './App.css';
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/prijava" element={<Login />} />
             <Route path="/moj-profil" element={<Profile />} />
             <Route path="/admin-stranica" element={<NapraviAukciju />} />
+            <Route path="/auction/:id" element={<AuctionDetails />} />
           </Routes>
           <Footer />
         </div>

@@ -1,11 +1,13 @@
 // src/components/HomePage/Body.js
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import './HomePage_css/Body.css';
 
 function Body() {
   const [auctions, setAuctions] = useState([]); // State to store auction items
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const navigate = useNavigate(); // For navigation
 
   useEffect(() => {
     // Fetch auction items from the backend
@@ -43,7 +45,12 @@ function Body() {
       <div className="item-list">
         {auctions.length > 0 ? (
           auctions.map((item) => (
-            <div key={item.id} className="item-card">
+            <div
+              key={item.id}
+              className="item-card"
+              onClick={() => navigate(`/auction/${item.id}`)} // Navigate to auction details page
+              style={{ cursor: 'pointer' }} // Change cursor to pointer
+            >
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <p>Početna cijena: ${item.starting_price}</p>
@@ -62,7 +69,6 @@ function Body() {
               ) : (
                 <p>Nema slika za ovu aukciju.</p>
               )}
-              <button className="btn">Postavi ponudu</button>
             </div>
           ))
         ) : (
