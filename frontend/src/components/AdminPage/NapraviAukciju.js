@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useUser } from '../../UserContext'; // Import the useUser hook
 import { useNavigate } from 'react-router-dom'; // For redirection
-import './AdminPage_css/NapraviAukciju.css'; // Optional: Add CSS for styling
+import './AdminPage_css/NapraviAukciju.css'; // Import CSS for styling
 import ActiveAuctions from './AktivneAukcije'; // Import the ActiveAuctions component
 
 function NapraviAukciju() {
@@ -153,25 +153,27 @@ function NapraviAukciju() {
         </label>
         {/* Image previews */}
         {formData.images.length > 0 && (
-          <div className="image-preview-container">
-            {formData.images.map((file, index) => (
-              <div key={index} className="image-preview-item">
-                <img
-                  src={URL.createObjectURL(file)} // Create a preview URL for the image
-                  alt={`Preview ${index}`}
-                  className="image-preview"
-                />
-                <label>
-                  <input
-                    type="radio"
-                    name="main-image"
-                    checked={mainImageIndex === index}
-                    onChange={() => handleMainImageSelect(index)}
+          <div className="image-preview-box">
+            <div className="image-preview-scroll">
+              {formData.images.map((file, index) => (
+                <div key={index} className="image-preview-item">
+                  <img
+                    src={URL.createObjectURL(file)} // Create a preview URL for the image
+                    alt={`Preview ${index}`}
+                    className="image-preview"
                   />
-                  Postavi kao glavnu sliku
-                </label>
-              </div>
-            ))}
+                  <label>
+                    <input
+                      type="radio"
+                      name="main-image"
+                      checked={mainImageIndex === index}
+                      onChange={() => handleMainImageSelect(index)}
+                    />
+                    Postavi kao glavnu sliku
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         <button type="submit" className="submit-button">
