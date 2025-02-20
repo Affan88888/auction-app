@@ -11,12 +11,13 @@ def create():
     description = data.get('description')
     starting_price = data.get('startingPrice')
     end_date = data.get('endDate')
+    main_image_index = int(data.get('main_image_index')) if data.get('main_image_index') else None
     files = request.files.getlist('images')
 
     if not title or not description or not starting_price or not end_date:
         return jsonify({'message': 'Svi podaci su obavezni.'}), 400
 
-    auction_id = create_auction(title, description, starting_price, end_date, files)
+    auction_id = create_auction(title, description, starting_price, end_date, files, main_image_index)
     return jsonify({'message': 'Aukcija uspješno kreirana.', 'auction_id': auction_id}), 201
 
 @auction_bp.route('/api/auctions', methods=['GET'])

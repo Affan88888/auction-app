@@ -16,6 +16,7 @@ function NapraviAukciju() {
     images: [], // Store selected files
   });
   const [newAuction, setNewAuction] = useState(null); // State to track the newly created auction
+  const [mainImageIndex, setMainImageIndex] = useState(null); // Track the selected main image index
 
   // Redirect non-admin users away from this page
   if (user?.role !== 'admin') {
@@ -38,6 +39,12 @@ function NapraviAukciju() {
       ...prevData,
       images: Array.from(e.target.files), // Convert FileList to array
     }));
+    setMainImageIndex(null); // Reset main image selection when new files are chosen
+  };
+
+  // Handle selecting the main image
+  const handleMainImageSelect = (index) => {
+    setMainImageIndex(index);
   };
 
   // Handle form submission
@@ -54,6 +61,9 @@ function NapraviAukciju() {
       formData.images.forEach((file, index) => {
         formDataToSend.append('images', file);
       });
+
+      // Append the main image index
+      formDataToSend.append('main_image_index', mainImageIndex);
 
       const response = await fetch('http://localhost:5000/api/create-auction', {
         method: 'POST',
@@ -78,6 +88,7 @@ function NapraviAukciju() {
           endDate: '',
           images: [],
         });
+        setMainImageIndex(null); // Reset main image selection
       } else {
         alert('Došlo je do greške prilikom kreiranja aukcije.');
       }
@@ -139,11 +150,33 @@ function NapraviAukciju() {
             onChange={handleFileChange}
           />
         </label>
+        {/* Image previews */}
+        {formData.images.length > 0 && (
+          <div className="image-preview-container">
+            {formData.images.map((file, index) => (
+              <div key={index} className="image-preview-item">
+                <img
+                  src={URL.createObjectURL(file)} // Create a preview URL for the image
+                  alt={`Preview ${index}`}
+                  className="image-preview"
+                />
+                <label>
+                  <input
+                    type="radio"
+                    name="main-image"
+                    checked={mainImageIndex === index}
+                    onChange={() => handleMainImageSelect(index)}
+                  />
+                  Postavi kao glavnu sliku
+                </label>
+              </div>
+            ))}
+          </div>
+        )}
         <button type="submit" className="submit-button">
           Kreiraj aukciju
         </button>
       </form>
-
       {/* Render the ActiveAuctions component and pass the new auction */}
       <ActiveAuctions addNewAuction={newAuction} />
     </div>
