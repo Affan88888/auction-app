@@ -16,7 +16,7 @@ function NapraviAukciju() {
     images: [], // Store selected files
   });
   const [newAuction, setNewAuction] = useState(null); // State to track the newly created auction
-  const [mainImageIndex, setMainImageIndex] = useState(null); // Track the selected main image index
+  const [mainImageIndex, setMainImageIndex] = useState(0); // Default to the first image (index 0)
 
   // Redirect non-admin users away from this page
   if (user?.role !== 'admin') {
@@ -35,11 +35,12 @@ function NapraviAukciju() {
 
   // Handle file input changes
   const handleFileChange = (e) => {
+    const files = Array.from(e.target.files); // Convert FileList to array
     setFormData((prevData) => ({
       ...prevData,
-      images: Array.from(e.target.files), // Convert FileList to array
+      images: files,
     }));
-    setMainImageIndex(null); // Reset main image selection when new files are chosen
+    setMainImageIndex(0); // Reset main image selection to the first image
   };
 
   // Handle selecting the main image
@@ -62,7 +63,7 @@ function NapraviAukciju() {
         formDataToSend.append('images', file);
       });
 
-      // Append the main image index
+      // Append the main image index (default to 0 if none is selected)
       formDataToSend.append('main_image_index', mainImageIndex);
 
       const response = await fetch('http://localhost:5000/api/create-auction', {
@@ -88,7 +89,7 @@ function NapraviAukciju() {
           endDate: '',
           images: [],
         });
-        setMainImageIndex(null); // Reset main image selection
+        setMainImageIndex(0); // Reset main image selection
       } else {
         alert('Došlo je do greške prilikom kreiranja aukcije.');
       }

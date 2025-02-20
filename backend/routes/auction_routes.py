@@ -11,8 +11,13 @@ def create():
     description = data.get('description')
     starting_price = data.get('startingPrice')
     end_date = data.get('endDate')
-    main_image_index = int(data.get('main_image_index')) if data.get('main_image_index') else None
     files = request.files.getlist('images')
+
+    # Get main_image_index, defaulting to 0 if not provided or invalid
+    try:
+        main_image_index = int(data.get('main_image_index', 0))
+    except ValueError:
+        main_image_index = 0
 
     if not title or not description or not starting_price or not end_date:
         return jsonify({'message': 'Svi podaci su obavezni.'}), 400

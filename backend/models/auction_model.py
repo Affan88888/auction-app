@@ -7,7 +7,7 @@ import os
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def create_auction(title, description, starting_price, end_date, files, main_image_index=None):
+def create_auction(title, description, starting_price, end_date, files, main_image_index=0):
     image_urls = []
     for file in files:
         if file and allowed_file(file.filename):
@@ -15,6 +15,9 @@ def create_auction(title, description, starting_price, end_date, files, main_ima
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
             image_urls.append(file_path)
+
+    # Ensure main_image_index is within bounds
+    main_image_index = max(0, min(main_image_index, len(image_urls) - 1)) if image_urls else None
 
     connection = get_db_connection()
     if connection:
