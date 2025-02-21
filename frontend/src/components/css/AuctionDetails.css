@@ -1,46 +1,70 @@
 /* src/components/css/AuctionDetails.css */
 
 .auction-details {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .auction-details h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  
-  .auction-details p {
-    margin: 10px 0;
-    font-size: 16px;
-  }
-  
-  .auction-images {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-  
-  .auction-image {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .bid-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
-  .bid-button:hover {
-    background-color: #0056b3;
-  }
+  padding: 20px;
+  text-align: center;
+}
+
+.auction-details h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.auction-details p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.image-slider {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.image-slider img {
+  width: 400px; /* Adjust as needed */
+  height: 400px; /* Adjust as needed */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.arrow-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.bid-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.bid-button:hover {
+  background-color: #0056b3;
+}

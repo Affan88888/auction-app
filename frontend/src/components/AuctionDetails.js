@@ -8,6 +8,7 @@ function AuctionDetails() {
   const [auction, setAuction] = useState(null); // State to store auction details
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image index
 
   useEffect(() => {
     // Fetch auction details from the backend
@@ -27,7 +28,6 @@ function AuctionDetails() {
         setLoading(false); // Hide loading state
       }
     };
-
     fetchAuctionDetails();
   }, [id]); // Run effect whenever the auction ID changes
 
@@ -39,6 +39,20 @@ function AuctionDetails() {
     return <div className="auction-details">{error}</div>;
   }
 
+  // Handle navigation to the next image
+  const goToNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === auction.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Handle navigation to the previous image
+  const goToPreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? auction.images.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div className="auction-details">
       <h2>{auction.title}</h2>
@@ -47,17 +61,20 @@ function AuctionDetails() {
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
       <p><strong>Broj pregleda:</strong> {auction.views || 0}</p>
 
-      {/* Display images */}
+      {/* Image slider */}
       {auction.images && auction.images.length > 0 ? (
-        <div className="auction-images">
-          {auction.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={auction.title}
-              className="auction-image"
-            />
-          ))}
+        <div className="image-slider">
+          <button className="arrow-button left-arrow" onClick={goToPreviousImage}>
+            &#10094;
+          </button>
+          <img
+            src={auction.images[currentImageIndex]}
+            alt={`${auction.title} - Image ${currentImageIndex + 1}`}
+            className="auction-image"
+          />
+          <button className="arrow-button right-arrow" onClick={goToNextImage}>
+            &#10095;
+          </button>
         </div>
       ) : (
         <p>Nema slika za ovu aukciju.</p>
