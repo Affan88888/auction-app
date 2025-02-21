@@ -53,6 +53,11 @@ function AuctionDetails() {
     );
   };
 
+  // Handle clicking on a thumbnail to set it as the current image
+  const selectThumbnail = (index) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
     <div className="auction-details">
       <h2>{auction.title}</h2>
@@ -63,19 +68,34 @@ function AuctionDetails() {
 
       {/* Image slider */}
       {auction.images && auction.images.length > 0 ? (
-        <div className="image-slider">
-          <button className="arrow-button left-arrow" onClick={goToPreviousImage}>
-            &#10094;
-          </button>
-          <img
-            src={auction.images[currentImageIndex]}
-            alt={`${auction.title} - Image ${currentImageIndex + 1}`}
-            className="auction-image"
-          />
-          <button className="arrow-button right-arrow" onClick={goToNextImage}>
-            &#10095;
-          </button>
-        </div>
+        <>
+          <div className="image-slider">
+            <button className="arrow-button left-arrow" onClick={goToPreviousImage}>
+              &#10094;
+            </button>
+            <img
+              src={auction.images[currentImageIndex]}
+              alt={`${auction.title} - Image ${currentImageIndex + 1}`}
+              className="auction-image"
+            />
+            <button className="arrow-button right-arrow" onClick={goToNextImage}>
+              &#10095;
+            </button>
+          </div>
+
+          {/* Thumbnail row */}
+          <div className="thumbnail-row">
+            {auction.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`${auction.title} - Thumbnail ${index + 1}`}
+                className={`thumbnail ${index === currentImageIndex ? 'active' : ''}`}
+                onClick={() => selectThumbnail(index)}
+              />
+            ))}
+          </div>
+        </>
       ) : (
         <p>Nema slika za ovu aukciju.</p>
       )}

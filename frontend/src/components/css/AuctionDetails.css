@@ -54,6 +54,28 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.thumbnail-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.thumbnail {
+  width: 80px; /* Smaller size for thumbnails */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.5; /* Reduced opacity for inactive thumbnails */
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail.active {
+  opacity: 1; /* Full opacity for the active thumbnail */
+  border: 2px solid #007bff; /* Highlight with a border */
+}
+
 .bid-button {
   background-color: #007bff;
   color: white;
