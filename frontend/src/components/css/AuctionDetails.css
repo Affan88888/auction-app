@@ -76,6 +76,12 @@
   border: 2px solid #007bff; /* Highlight with a border */
 }
 
+.countdown-timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: red; /* Make the countdown timer visually distinct */
+}
+
 .bid-button {
   background-color: #007bff;
   color: white;

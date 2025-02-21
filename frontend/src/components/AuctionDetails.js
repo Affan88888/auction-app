@@ -1,7 +1,7 @@
 // src/components/AuctionDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './css/AuctionDetails.css'; // Optional: Add CSS for styling
+import './css/AuctionDetails.css'; // Import CSS for styling
 
 function AuctionDetails() {
   const { id } = useParams(); // Get the auction ID from the URL
@@ -9,6 +9,8 @@ function AuctionDetails() {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image index
+  const [countdown, setCountdown] = useState(''); // State to store the countdown timer
+  const [showCountdown, setShowCountdown] = useState(false); // State to track if the countdown should be shown
 
   useEffect(() => {
     // Fetch auction details from the backend
@@ -30,6 +32,42 @@ function AuctionDetails() {
     };
     fetchAuctionDetails();
   }, [id]); // Run effect whenever the auction ID changes
+
+  useEffect(() => {
+    // Start the countdown when auction data is loaded
+    if (auction && auction.end_date) {
+      const endDate = new Date(auction.end_date).getTime(); // Convert end date to timestamp
+      const now = new Date().getTime(); // Current timestamp
+      const timeLeft = endDate - now; // Time left in milliseconds
+
+      // Check if the auction is ending in less than 24 hours
+      if (timeLeft > 0 && timeLeft <= 24 * 60 * 60 * 1000) {
+        setShowCountdown(true); // Show the countdown timer
+      }
+
+      const intervalId = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = endDate - now;
+
+        if (timeLeft > 0) {
+          // Calculate total hours, minutes, and seconds
+          const totalSeconds = Math.floor(timeLeft / 1000);
+          const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+          const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+          const seconds = String(totalSeconds % 60).padStart(2, '0');
+
+          // Format the countdown as HH:MM:SS
+          setCountdown(`${hours}:${minutes}:${seconds}`);
+        } else {
+          // Auction has ended
+          setCountdown('00:00:00');
+          clearInterval(intervalId); // Stop the countdown
+        }
+      }, 1000); // Update every second
+
+      return () => clearInterval(intervalId); // Cleanup interval on unmount
+    }
+  }, [auction]);
 
   if (loading) {
     return <div className="auction-details">Učitavanje detalja aukcije...</div>;
@@ -64,6 +102,10 @@ function AuctionDetails() {
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Početna cijena:</strong> ${auction.starting_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
+      {/* Show countdown timer only if the auction is ending in less than 24 hours */}
+      {showCountdown && (
+        <p className="countdown-timer"><strong>Završava:</strong> {countdown}</p>
+      )}
       <p><strong>Broj pregleda:</strong> {auction.views || 0}</p>
 
       {/* Image slider */}
@@ -75,7 +117,7 @@ function AuctionDetails() {
             </button>
             <img
               src={auction.images[currentImageIndex]}
-              alt={`${auction.title} - Image ${currentImageIndex + 1}`}
+              alt={`${auction.title} - ${currentImageIndex + 1}`}
               className="auction-image"
             />
             <button className="arrow-button right-arrow" onClick={goToNextImage}>
