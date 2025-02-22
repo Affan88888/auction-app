@@ -1,0 +1,41 @@
+/* src/components/css/PlaceBid.css */
+
+.place-bid {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .place-bid h3 {
+    margin-bottom: 10px;
+  }
+  
+  .place-bid input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .place-bid button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .place-bid button:hover {
+    background-color: #0056b3;
+  }
+  
+  .place-bid .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  .place-bid .success {
+    color: green;
+    font-size: 14px;
+  }

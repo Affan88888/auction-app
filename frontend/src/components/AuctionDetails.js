@@ -1,7 +1,10 @@
 // src/components/AuctionDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useUser } from '../UserContext'; // Import the useUser hook
+import PlaceBid from './PlaceBid'; // Import the PlaceBid component
 import './css/AuctionDetails.css'; // Import CSS for styling
+import './css/PlaceBid.css'; // Import PlaceBid CSS
 
 function AuctionDetails() {
   const { id } = useParams(); // Get the auction ID from the URL
@@ -11,6 +14,9 @@ function AuctionDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image index
   const [countdown, setCountdown] = useState(''); // State to store the countdown timer
   const [showCountdown, setShowCountdown] = useState(false); // State to track if the countdown should be shown
+
+  // Access the logged-in user from UserContext
+  const { user } = useUser();
 
   useEffect(() => {
     // Fetch auction details from the backend
@@ -102,10 +108,12 @@ function AuctionDetails() {
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Početna cijena:</strong> ${auction.starting_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
+
       {/* Show countdown timer only if the auction is ending in less than 24 hours */}
       {showCountdown && (
         <p className="countdown-timer"><strong>Završava:</strong> {countdown}</p>
       )}
+
       <p><strong>Broj pregleda:</strong> {auction.views || 0}</p>
 
       {/* Image slider */}
@@ -142,8 +150,25 @@ function AuctionDetails() {
         <p>Nema slika za ovu aukciju.</p>
       )}
 
-      {/* Placeholder for bid functionality */}
-      <button className="bid-button">Postavi ponudu</button>
+      {/* Conditional rendering of the PlaceBid component */}
+      {user ? (
+        <PlaceBid
+          auctionId={auction.id}
+          user={user} // Pass the logged-in user data
+          onUpdate={() => window.location.reload()} // Refresh the page after a successful bid
+        />
+      ) : (
+        <div className="place-bid">
+          <h3>Postavi ponudu</h3>
+          <p className="error">
+            Morate se prijaviti ili registrirati kako biste postavili ponudu.
+          </p>
+          <p>
+            <a href="/prijava">Prijavite se</a> ili{' '}
+            <a href="/registracija">registrirajte se</a>.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
