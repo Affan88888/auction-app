@@ -10,7 +10,7 @@ import Profile from './components/Profile';
 import NapraviAukciju from './components/AdminPage/NapraviAukciju';
 import Body from './components/HomePage/Body';
 import HomeContent from './components/HomePage/HomeContent';
-import AuctionDetails from './components/AuctionDetails';
+import AuctionDetails from './components/AuctionPage/AuctionDetails';
 import { UserProvider } from './UserContext';
 import './App.css';
 

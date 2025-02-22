@@ -1,10 +1,10 @@
 // src/components/AuctionDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUser } from '../UserContext'; // Import the useUser hook
+import { useUser } from '../../UserContext'; // Import the useUser hook
 import PlaceBid from './PlaceBid'; // Import the PlaceBid component
-import './css/AuctionDetails.css'; // Import CSS for styling
-import './css/PlaceBid.css'; // Import PlaceBid CSS
+import './AuctionPage_css/AuctionDetails.css'; // Import CSS for styling
+import './AuctionPage_css/PlaceBid.css'; // Import PlaceBid CSS
 
 function AuctionDetails() {
   const { id } = useParams(); // Get the auction ID from the URL
