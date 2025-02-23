@@ -106,7 +106,8 @@ function AuctionDetails() {
     <div className="auction-details">
       <h2>{auction.title}</h2>
       <p><strong>Opis:</strong> {auction.description}</p>
-      <p><strong>Početna cijena:</strong> ${auction.starting_price}</p>
+      {/* Use current_price instead of starting_price */}
+      <p><strong>Trenutna cijena:</strong> ${auction.current_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
 
       {/* Show countdown timer only if the auction is ending in less than 24 hours */}

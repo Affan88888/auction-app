@@ -94,6 +94,14 @@ def get_auction_details(auction_id, base_url):
                 auction['images'] = auction['images'].split(',') if auction['images'] else []
                 auction['images'] = [f"{base_url}{img}" for img in auction['images']]
                 auction['main_image_url'] = f"{base_url}{auction['main_image_url']}" if auction['main_image_url'] else None
+
+                # Fetch the highest bid for the auction
+                cursor.execute('SELECT MAX(amount) AS highest_bid FROM bids WHERE auction_id = %s', (auction_id,))
+                highest_bid = cursor.fetchone()['highest_bid']
+                
+                # Add the highest bid to the auction object
+                auction['current_price'] = highest_bid or auction['starting_price']
+
                 return auction
             return None
         finally:
