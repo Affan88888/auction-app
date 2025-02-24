@@ -29,6 +29,7 @@ mycursor = db.cursor()
 #    description TEXT NOT NULL,
 #    starting_price DECIMAL(10, 2) NOT NULL,
 #    end_date DATETIME NOT NULL,
+#    main_image_url VARCHAR(255),
 #    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 #)
 #"""
