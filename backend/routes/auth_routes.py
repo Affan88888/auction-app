@@ -1,6 +1,6 @@
 # routes/auth_routes.py
-from flask import Blueprint, request, jsonify
-from models.user_model import register_user, login_user, get_user_profile
+from flask import Blueprint, request, jsonify, session
+from models.user_model import register_user, login_user, get_user_profile, check_auth_status
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -16,6 +16,12 @@ def register():
 
     user = register_user(username, email, password)
     if user:
+        # Store user data in the session
+        session['user_id'] = user['id']
+        session['username'] = user['username']
+        session['email'] = user['email']
+        session['role'] = user['role']
+        
         return jsonify({
             'message': 'Korisnik uspješno registrovan.',
             'user': {
@@ -38,6 +44,12 @@ def login():
 
     user = login_user(email, password)
     if user:
+        # Store user data in the session
+        session['user_id'] = user['id']
+        session['username'] = user['username']
+        session['email'] = user['email']
+        session['role'] = user['role']
+
         return jsonify({
             'message': 'Uspješna prijava.',
             'user': {
@@ -75,7 +87,21 @@ def get_profile():
                 'role': user['role']
             }
         }), 200
-
     except Exception as e:
         print(f"Error fetching profile: {e}")
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+
+@auth_bp.route('/api/check-auth', methods=['GET'])
+def check_auth():
+    user_data = check_auth_status(session)
+    if user_data:
+        return jsonify({
+            'authenticated': True,
+            'user': user_data
+        }), 200
+    return jsonify({'authenticated': False}), 401
+
+@auth_bp.route('/api/logout', methods=['POST'])
+def logout():
+    session.clear()  # Clear all session data
+    return jsonify({'message': 'Uspješno odjavljeni.'}), 200

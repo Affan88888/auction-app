@@ -47,3 +47,17 @@ def get_user_profile(email):
             cursor.close()
             connection.close()
     return None
+
+def check_auth_status(session):
+    """
+    Check if the user is logged in by verifying the session.
+    Returns user data if authenticated, otherwise None.
+    """
+    if 'user_id' in session:
+        return {
+            'id': session['user_id'],
+            'username': session['username'],
+            'email': session['email'],
+            'role': session['role']
+        }
+    return None
