@@ -48,6 +48,7 @@ def get_all_auctions(base_url):
     if connection:
         cursor = connection.cursor(dictionary=True)
         try:
+            # Fetch all auctions and their images
             cursor.execute('''
                 SELECT a.id, a.title, a.description, a.starting_price, a.end_date, a.main_image_url,
                        GROUP_CONCAT(ai.image_url) AS images
@@ -56,10 +57,26 @@ def get_all_auctions(base_url):
                 GROUP BY a.id
             ''')
             auctions = cursor.fetchall()
+            
+            # Fetch the highest bids for all auctions in a single query
+            cursor.execute('''
+                SELECT auction_id, MAX(amount) AS highest_bid
+                FROM bids
+                GROUP BY auction_id
+            ''')
+            highest_bids = {row['auction_id']: row['highest_bid'] for row in cursor.fetchall()}
+
+            # Process each auction to add image URLs, main image URL, and current price
             for auction in auctions:
+                # Add image URLs
                 auction['images'] = [f"{base_url}{img}" for img in auction['images'].split(',')] if auction['images'] else []
+                # Add main image URL
                 auction['main_image_url'] = f"{base_url}{auction['main_image_url']}" if auction['main_image_url'] else None
+                # Add the current price (highest bid or starting price if no bids exist)
+                auction['current_price'] = highest_bids.get(auction['id']) or auction['starting_price']
+
             return auctions
+
         finally:
             cursor.close()
             connection.close()

@@ -53,7 +53,7 @@ function Body() {
             >
               <h3>{item.title}</h3>
               <p>{item.description}</p>
-              <p>Početna cijena: ${item.starting_price}</p>
+              <p>Trenutna cijena: ${item.current_price}</p>
               {/* Display main image */}
               {item.main_image_url ? (
                 <img
