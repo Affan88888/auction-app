@@ -30,7 +30,9 @@ mycursor = db.cursor()
 #    starting_price DECIMAL(10, 2) NOT NULL,
 #    end_date DATETIME NOT NULL,
 #    main_image_url VARCHAR(255),
-#    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+#    category_id INT,
+#    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+#    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL;
 #)
 #"""
 
@@ -54,6 +56,14 @@ mycursor = db.cursor()
 #    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 #    FOREIGN KEY (auction_id) REFERENCES auctions(id) ON DELETE CASCADE,
 #    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+#)
+#"""
+
+#KOD ZA PRAVLJENE categories table-a
+#create_table_query = """
+#CREATE TABLE categories (
+#    id INT AUTO_INCREMENT PRIMARY KEY,
+#    name VARCHAR(255) NOT NULL UNIQUE
 #)
 #"""
 
