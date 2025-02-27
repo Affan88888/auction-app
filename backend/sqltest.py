@@ -2,9 +2,9 @@ import mysql.connector
 
 db = mysql.connector.connect(
        host="localhost",
-       user="your_database_user_here",
-       passwd="your_database_password_here",
-       database="your_database_name_here"
+       user="user",
+       passwd="passwd",
+       database="database"
     )
 
 mycursor = db.cursor()
@@ -62,25 +62,35 @@ mycursor = db.cursor()
 #KOD ZA PRAVLJENE categories table-a
 #create_table_query = """
 #CREATE TABLE categories (
-#    id INT AUTO_INCREMENT PRIMARY KEY,
+#   id INT AUTO_INCREMENT PRIMARY KEY,
 #    name VARCHAR(255) NOT NULL UNIQUE
 #)
 #"""
 
+#KOD ZA UBACIVANJE kategorija u categories table
+#insert_auctions_query = """
+#INSERT INTO categories (name) VALUES
+#('Elektronika'),
+#('Vozila'),
+#('Dom i Vrt'),
+#('Moda i Oprema'),
+#('Kolekcije i Umjetnost'),
+#('Sport i Rekreacija'),
+#('Igračke i Igre'),
+#('Knjige i Mediji'),
+#('Posao i Industrija'),
+#('Zdravlje i Ljepota'),
+#('Kućni Ljubimci i Životinje'),
+#('Razno');
+#"""
+
+#mycursor.execute(insert_auctions_query)
+
 #mycursor.execute(create_table_query)
 
-#mycursor.execute("CREATE DATABASE user_auth_db")
-
-#mycursor.execute("DESCRIBE Person")
-
-#mycursor.execute("INSERT INTO users (username, email, password_hash, role) VALUES (%s,%s,%s,%s)", ('username', 'email', 'hashed_pass', 'role'))
-
-#mycursor.execute("DELETE FROM users")
 #db.commit()
 
-#mycursor.execute("SELECT * FROM Person")
+#mycursor.execute("CREATE DATABASE user_auth_db"
 
-#for x in mycursor:
-   # print(x)
 
-#mycursor.execute("DROP DATABASE testdatabase")
+
