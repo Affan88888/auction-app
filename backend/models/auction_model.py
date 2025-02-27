@@ -7,7 +7,7 @@ import os
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def create_auction(title, description, starting_price, end_date, files, main_image_index=0):
+def create_auction(title, description, starting_price, end_date, category_id, files, main_image_index=0):
     image_urls = []
     for file in files:
         if file and allowed_file(file.filename):
@@ -25,8 +25,8 @@ def create_auction(title, description, starting_price, end_date, files, main_ima
         try:
             # Insert the auction into the database
             cursor.execute(
-                'INSERT INTO auctions (title, description, starting_price, end_date, main_image_url, created_at) VALUES (%s, %s, %s, %s, %s, NOW())',
-                (title, description, starting_price, end_date, image_urls[main_image_index] if main_image_index is not None else None)
+                'INSERT INTO auctions (title, description, starting_price, end_date, category_id, main_image_url, created_at) VALUES (%s, %s, %s, %s, %s, %s, NOW())',
+                (title, description, starting_price, end_date, category_id, image_urls[main_image_index] if main_image_index is not None else None)
             )
             auction_id = cursor.lastrowid
 
@@ -120,6 +120,26 @@ def get_auction_details(auction_id, base_url):
                 auction['current_price'] = highest_bid or auction['starting_price']
 
                 return auction
+            return None
+        finally:
+            cursor.close()
+            connection.close()
+
+def get_all_categories():
+    """
+    Fetches all categories from the database.
+    Returns a list of categories or None if an error occurs.
+    """
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        try:
+            # Fetch all categories
+            cursor.execute('SELECT id, name FROM categories')
+            categories = cursor.fetchall()
+            return categories
+        except Exception as e:
+            print(f"Database error: {e}")
             return None
         finally:
             cursor.close()

@@ -1,6 +1,6 @@
 # routes/auction_routes.py
 from flask import Blueprint, request, jsonify
-from models.auction_model import create_auction, get_all_auctions, delete_auction, get_auction_details
+from models.auction_model import create_auction, get_all_auctions, delete_auction, get_auction_details, get_all_categories
 
 auction_bp = Blueprint('auction', __name__)
 
@@ -11,6 +11,7 @@ def create():
     description = data.get('description')
     starting_price = data.get('startingPrice')
     end_date = data.get('endDate')
+    category_id = data.get('categoryId')
     files = request.files.getlist('images')
 
     # Get main_image_index, defaulting to 0 if not provided or invalid
@@ -19,10 +20,10 @@ def create():
     except ValueError:
         main_image_index = 0
 
-    if not title or not description or not starting_price or not end_date:
+    if not title or not description or not starting_price or not end_date or not category_id:
         return jsonify({'message': 'Svi podaci su obavezni.'}), 400
 
-    auction_id = create_auction(title, description, starting_price, end_date, files, main_image_index)
+    auction_id = create_auction(title, description, starting_price, end_date, category_id, files, main_image_index)
     return jsonify({'message': 'Aukcija uspješno kreirana.', 'auction_id': auction_id}), 201
 
 @auction_bp.route('/api/auctions', methods=['GET'])
@@ -43,3 +44,11 @@ def get_details(auction_id):
     if auction:
         return jsonify({'auction': auction}), 200
     return jsonify({'message': 'Aukcija nije pronađena.'}), 404
+
+@auction_bp.route('/api/categories', methods=['GET'])
+def get_categories():
+    categories = get_all_categories()
+    if categories is not None:
+        return jsonify({'categories': categories}), 200
+    else:
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500

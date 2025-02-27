@@ -1,5 +1,4 @@
-// src/components/NapraviAukciju.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUser } from '../../UserContext'; // Import the useUser hook
 import { useNavigate } from 'react-router-dom'; // For redirection
 import './AdminPage_css/NapraviAukciju.css'; // Import CSS for styling
@@ -14,9 +13,27 @@ function NapraviAukciju() {
     startingPrice: '',
     endDate: '',
     images: [], // Store selected files
+    categoryId: '', // Store the selected category ID
   });
   const [newAuction, setNewAuction] = useState(null); // State to track the newly created auction
   const [mainImageIndex, setMainImageIndex] = useState(0); // Default to the first image (index 0)
+  const [categories, setCategories] = useState([]); // State to store available categories
+
+    // Fetch categories from the backend
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/categories');
+        const result = await response.json();
+        if (result.categories) {
+          setCategories(result.categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // Redirect non-admin users away from this page
   if (user?.role !== 'admin') {
@@ -57,12 +74,11 @@ function NapraviAukciju() {
       formDataToSend.append('description', formData.description);
       formDataToSend.append('startingPrice', formData.startingPrice);
       formDataToSend.append('endDate', formData.endDate);
-
+      formDataToSend.append('categoryId', formData.categoryId); // Append the selected category ID
       // Append images to FormData
       formData.images.forEach((file, index) => {
         formDataToSend.append('images', file);
       });
-
       // Append the main image index (default to 0 if none is selected)
       formDataToSend.append('main_image_index', mainImageIndex);
 
@@ -88,6 +104,7 @@ function NapraviAukciju() {
           startingPrice: '',
           endDate: '',
           images: [],
+          categoryId: '', // Reset category selection
         });
         setMainImageIndex(0); // Reset main image selection
       } else {
@@ -141,6 +158,23 @@ function NapraviAukciju() {
             onChange={handleChange}
             required
           />
+        </label>
+        {/* Category Dropdown */}
+        <label>
+          Kategorija:
+          <select
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Odaberite kategoriju</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Slike proizvoda:
