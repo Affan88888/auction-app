@@ -98,26 +98,35 @@ def get_auction_details(auction_id, base_url):
     if connection:
         cursor = connection.cursor(dictionary=True)
         try:
+            # Fetch auction details along with the category name
             cursor.execute('''
                 SELECT a.id, a.title, a.description, a.starting_price, a.end_date, a.main_image_url,
-                       GROUP_CONCAT(ai.image_url) AS images
+                       GROUP_CONCAT(ai.image_url) AS images, c.name AS category_name
                 FROM auctions a
                 LEFT JOIN auction_images ai ON a.id = ai.auction_id
+                LEFT JOIN categories c ON a.category_id = c.id
                 WHERE a.id = %s
                 GROUP BY a.id
             ''', (auction_id,))
             auction = cursor.fetchone()
+
             if auction:
+                # Process image URLs
                 auction['images'] = auction['images'].split(',') if auction['images'] else []
                 auction['images'] = [f"{base_url}{img}" for img in auction['images']]
+                
+                # Process main image URL
                 auction['main_image_url'] = f"{base_url}{auction['main_image_url']}" if auction['main_image_url'] else None
 
                 # Fetch the highest bid for the auction
                 cursor.execute('SELECT MAX(amount) AS highest_bid FROM bids WHERE auction_id = %s', (auction_id,))
                 highest_bid = cursor.fetchone()['highest_bid']
-                
-                # Add the highest bid to the auction object
+
+                # Add the current price (highest bid or starting price if no bids exist)
                 auction['current_price'] = highest_bid or auction['starting_price']
+
+                # Add the category name
+                auction['category_name'] = auction['category_name'] or 'Nepoznato'  # Default to 'Nepoznato' if null
 
                 return auction
             return None
