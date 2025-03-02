@@ -13,6 +13,7 @@ function AuctionDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image index
   const [countdown, setCountdown] = useState(''); // State to store the countdown timer
   const [showCountdown, setShowCountdown] = useState(false); // State to track if the countdown should be shown
+  const [auctionEnded, setAuctionEnded] = useState(false); // State to track if the auction has ended dynamically
   const { user } = useUser(); // Access the logged-in user from UserContext
 
   useEffect(() => {
@@ -27,6 +28,8 @@ function AuctionDetails() {
           // Determine if the countdown should be shown
           if (!result.auction.has_ended) {
             setShowCountdown(true); // Show countdown if the auction has not ended
+          } else {
+            setAuctionEnded(true); // Mark the auction as ended if `has_ended` is true
           }
         } else {
           setError('Greška prilikom učitavanja detalja aukcije.');
@@ -58,8 +61,9 @@ function AuctionDetails() {
           setCountdown(`${hours}:${minutes}:${seconds}`);
         } else {
           // Auction has ended
-          setCountdown('Aukcija je završena');
+          setCountdown('Aukcija je završena!');
           setShowCountdown(false); // Stop showing the countdown
+          setAuctionEnded(true); // Mark the auction as ended
           clearInterval(intervalId); // Stop the countdown
         }
       }, 1000); // Update every second
@@ -101,9 +105,9 @@ function AuctionDetails() {
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Trenutna cijena:</strong> ${auction.current_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
-      {/* Show countdown timer only if the auction is ending in less than 24 hours */}
-      {auction.has_ended ? (
-        <p className="countdown-timer">Aukcija je završena!</p>
+      {/* Show countdown timer or "Aukcija je završena!" */}
+      {(auction.has_ended || auctionEnded) ? (
+        <p className="countdown-timer"><strong>Aukcija je završena!</strong></p>
       ) : (
         showCountdown && (
           <p className="countdown-timer"><strong>Završava:</strong> {countdown}</p>
