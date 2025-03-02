@@ -13,8 +13,7 @@ function AuctionDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track the current image index
   const [countdown, setCountdown] = useState(''); // State to store the countdown timer
   const [showCountdown, setShowCountdown] = useState(false); // State to track if the countdown should be shown
-  // Access the logged-in user from UserContext
-  const { user } = useUser();
+  const { user } = useUser(); // Access the logged-in user from UserContext
 
   useEffect(() => {
     // Fetch auction details from the backend
@@ -24,6 +23,11 @@ function AuctionDetails() {
         if (response.ok) {
           const result = await response.json();
           setAuction(result.auction); // Store the fetched auction details
+
+          // Determine if the countdown should be shown
+          if (!result.auction.has_ended) {
+            setShowCountdown(true); // Show countdown if the auction has not ended
+          }
         } else {
           setError('Greška prilikom učitavanja detalja aukcije.');
         }
@@ -39,14 +43,8 @@ function AuctionDetails() {
 
   useEffect(() => {
     // Start the countdown when auction data is loaded
-    if (auction && auction.end_date) {
+    if (auction && !auction.has_ended) {
       const endDate = new Date(auction.end_date).getTime(); // Convert end date to timestamp
-      const now = new Date().getTime(); // Current timestamp
-      const timeLeft = endDate - now; // Time left in milliseconds
-      // Check if the auction is ending in less than 24 hours
-      if (timeLeft > 0 && timeLeft <= 24 * 60 * 60 * 1000) {
-        setShowCountdown(true); // Show the countdown timer
-      }
       const intervalId = setInterval(() => {
         const now = new Date().getTime();
         const timeLeft = endDate - now;
@@ -60,7 +58,8 @@ function AuctionDetails() {
           setCountdown(`${hours}:${minutes}:${seconds}`);
         } else {
           // Auction has ended
-          setCountdown('00:00:00');
+          setCountdown('Aukcija je završena');
+          setShowCountdown(false); // Stop showing the countdown
           clearInterval(intervalId); // Stop the countdown
         }
       }, 1000); // Update every second
@@ -103,8 +102,12 @@ function AuctionDetails() {
       <p><strong>Trenutna cijena:</strong> ${auction.current_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
       {/* Show countdown timer only if the auction is ending in less than 24 hours */}
-      {showCountdown && (
-        <p className="countdown-timer"><strong>Završava:</strong> {countdown}</p>
+      {auction.has_ended ? (
+        <p className="countdown-timer">Aukcija je završena!</p>
+      ) : (
+        showCountdown && (
+          <p className="countdown-timer"><strong>Završava:</strong> {countdown}</p>
+        )
       )}
       <p><strong>Broj pregleda:</strong> {auction.views || 0}</p>
       {/* Image slider */}

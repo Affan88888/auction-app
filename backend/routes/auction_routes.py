@@ -1,5 +1,6 @@
 # routes/auction_routes.py
 from flask import Blueprint, request, jsonify
+from datetime import datetime, timezone 
 from models.auction_model import create_auction, get_all_auctions, delete_auction, get_auction_details, get_all_categories
 
 auction_bp = Blueprint('auction', __name__)
@@ -22,8 +23,15 @@ def create():
 
     if not title or not description or not starting_price or not end_date or not category_id:
         return jsonify({'message': 'Svi podaci su obavezni.'}), 400
+    
+    # Convert end_date to UTC
+    try:
+        local_end_date = datetime.fromisoformat(end_date)  # Parse the input date
+        utc_end_date = local_end_date.astimezone(timezone.utc)  # Convert to UTC
+    except ValueError:
+        return jsonify({'message': 'Neispravan format datuma.'}), 400
 
-    auction_id = create_auction(title, description, starting_price, end_date, category_id, files, main_image_index)
+    auction_id = create_auction(title, description, starting_price, utc_end_date.strftime('%Y-%m-%d %H:%M:%S'), category_id, files, main_image_index)
     return jsonify({'message': 'Aukcija uspješno kreirana.', 'auction_id': auction_id}), 201
 
 @auction_bp.route('/api/auctions', methods=['GET'])

@@ -3,6 +3,7 @@ from utils.db import get_db_connection
 from werkzeug.utils import secure_filename
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 import os
+from datetime import datetime, timezone
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -93,6 +94,8 @@ def delete_auction(auction_id):
             cursor.close()
             connection.close()
 
+from datetime import datetime, timezone  # Import timezone explicitly
+
 def get_auction_details(auction_id, base_url):
     connection = get_db_connection()
     if connection:
@@ -121,12 +124,19 @@ def get_auction_details(auction_id, base_url):
                 # Fetch the highest bid for the auction
                 cursor.execute('SELECT MAX(amount) AS highest_bid FROM bids WHERE auction_id = %s', (auction_id,))
                 highest_bid = cursor.fetchone()['highest_bid']
-
                 # Add the current price (highest bid or starting price if no bids exist)
                 auction['current_price'] = highest_bid or auction['starting_price']
 
                 # Add the category name
                 auction['category_name'] = auction['category_name'] or 'Nepoznato'  # Default to 'Nepoznato' if null
+
+                # Convert end_date to a timezone-aware datetime
+                end_date_naive = auction['end_date']  # Naive datetime from the database
+                end_date = end_date_naive.replace(tzinfo=timezone.utc)  # Make it timezone-aware
+
+                # Check if the auction has ended (use UTC for comparison)
+                now_utc = datetime.now(timezone.utc)  # Use timezone-aware UTC time
+                auction['has_ended'] = now_utc > end_date  # True if the auction has ended
 
                 return auction
             return None
