@@ -1,6 +1,6 @@
 # models/bids_model.py
 from utils.db import get_db_connection
-from datetime import datetime
+from datetime import datetime, timezone
 
 def place_bid(auction_id, user_id, bid_amount):
     """
@@ -17,8 +17,12 @@ def place_bid(auction_id, user_id, bid_amount):
             if not auction:
                 return {'error': 'Aukcija nije pronađena.'}, 404
 
-            current_time = datetime.now()
-            if current_time > auction['end_date']:
+            current_time = datetime.now(timezone.utc) # Use timezone-aware UTC time
+            # Convert end_date to a timezone-aware datetime
+            end_date_naive = auction['end_date']  # Naive datetime from the database
+            end_date = end_date_naive.replace(tzinfo=timezone.utc)  # Make it timezone-aware
+
+            if current_time > end_date:
                 return {'error': 'Aukcija je završila.'}, 400
 
             # Fetch the highest bid for the auction
