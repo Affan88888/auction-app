@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import NapraviAukciju from './components/AdminPage/NapraviAukciju';
 import Body from './components/HomePage/Body';
+import CategoryIcons from './components/HomePage/CategoryIcons';
 import HomeContent from './components/HomePage/HomeContent';
 import AuctionDetails from './components/AuctionPage/AuctionDetails';
 import CategoryAuctions from './components/CategoryAuctions';
@@ -26,6 +27,7 @@ function App() {
               path="/"
               element={
                 <HomeContent>
+                  <CategoryIcons />
                   <Body />
                 </HomeContent>
               }
