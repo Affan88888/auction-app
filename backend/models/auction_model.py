@@ -163,3 +163,43 @@ def get_all_categories():
         finally:
             cursor.close()
             connection.close()
+
+def get_auctions_by_category(category_name, base_url):
+    """
+    Fetches all auctions belonging to a specific category.
+    Returns a list of auctions or None if an error occurs.
+    """
+    connection = get_db_connection()
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        try:
+            # Fetch auctions for the specified category
+            cursor.execute('''
+                SELECT a.id, a.title, a.description, a.starting_price, a.end_date, a.main_image_url,
+                       GROUP_CONCAT(ai.image_url) AS images
+                FROM auctions a
+                LEFT JOIN auction_images ai ON a.id = ai.auction_id
+                LEFT JOIN categories c ON a.category_id = c.id
+                WHERE c.name = %s
+                GROUP BY a.id
+            ''', (category_name,))
+            auctions = cursor.fetchall()
+
+            # Process image URLs and main_image_url
+            for auction in auctions:
+                # Process additional images
+                auction['images'] = [f"{base_url}{img}" for img in auction['images'].split(',')] if auction['images'] else []
+
+                # Process main image URL
+                if auction['main_image_url']:
+                    auction['main_image_url'] = f"{base_url}{auction['main_image_url']}"
+
+            return auctions if auctions else []
+
+        except Exception as e:
+            print(f"Database error: {e}")
+            return None
+
+        finally:
+            cursor.close()
+            connection.close()

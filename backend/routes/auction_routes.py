@@ -1,7 +1,7 @@
 # routes/auction_routes.py
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timezone 
-from models.auction_model import create_auction, get_all_auctions, delete_auction, get_auction_details, get_all_categories
+from models.auction_model import create_auction, get_all_auctions, delete_auction, get_auction_details, get_all_categories, get_auctions_by_category
 
 auction_bp = Blueprint('auction', __name__)
 
@@ -59,4 +59,17 @@ def get_categories():
     if categories is not None:
         return jsonify({'categories': categories}), 200
     else:
+        return jsonify({'message': 'Došlo je do greške na serveru.'}), 500
+    
+@auction_bp.route('/api/auctions/category/<string:category_name>', methods=['GET'])
+def get_auctions_by_category_route(category_name):
+    """
+    API endpoint to fetch auctions for a specific category.
+    """
+    base_url = request.host_url
+    auctions = get_auctions_by_category(category_name, base_url)
+
+    if auctions is not None:
+        return jsonify({'auctions': auctions}), 200  # Always return 200 OK, even if auctions is an empty list
+    else:  # If there was an error fetching data
         return jsonify({'message': 'Došlo je do greške na serveru.'}), 500

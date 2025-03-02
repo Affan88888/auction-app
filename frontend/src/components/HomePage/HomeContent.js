@@ -3,6 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import CategoryDropdown from './CategoryDropdown';
+import CategoryIcons from './CategoryIcons';
 
 function HomeContent({ children }) {
   const location = useLocation(); // Get the current location
@@ -14,6 +15,7 @@ function HomeContent({ children }) {
         <div className="search-and-categories">
           <CategoryDropdown />
           <SearchBar />
+          <CategoryIcons />
         </div>
       )}
       {/* Render the main content (children) */}
