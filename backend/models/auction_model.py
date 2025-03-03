@@ -185,7 +185,7 @@ def get_auctions_by_category(category_name, base_url):
             ''', (category_name,))
             auctions = cursor.fetchall()
 
-            # Process image URLs and main_image_url
+            # Process each auction
             for auction in auctions:
                 # Process additional images
                 auction['images'] = [f"{base_url}{img}" for img in auction['images'].split(',')] if auction['images'] else []
@@ -193,6 +193,20 @@ def get_auctions_by_category(category_name, base_url):
                 # Process main image URL
                 if auction['main_image_url']:
                     auction['main_image_url'] = f"{base_url}{auction['main_image_url']}"
+
+                # Fetch the highest bid for the auction
+                cursor.execute('SELECT MAX(amount) AS highest_bid FROM bids WHERE auction_id = %s', (auction['id'],))
+                highest_bid = cursor.fetchone()['highest_bid']
+                # Add the current price (highest bid or starting price if no bids exist)
+                auction['current_price'] = highest_bid or auction['starting_price']
+
+                # Convert end_date to a timezone-aware datetime
+                end_date_naive = auction['end_date']  # Naive datetime from the database
+                end_date = end_date_naive.replace(tzinfo=timezone.utc)  # Make it timezone-aware
+
+                # Check if the auction has ended (use UTC for comparison)
+                now_utc = datetime.now(timezone.utc)  # Use timezone-aware UTC time
+                auction['has_ended'] = now_utc > end_date  # True if the auction has ended
 
             return auctions if auctions else []
 
