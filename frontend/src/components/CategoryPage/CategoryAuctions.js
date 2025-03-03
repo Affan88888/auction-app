@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './HomePage/HomePage_css/Body.css';
+import '../HomePage/HomePage_css/Body.css';
 
 function CategoryAuctions() {
   const { categoryName } = useParams(); // Get the category name from the URL

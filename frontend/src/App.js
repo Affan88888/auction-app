@@ -12,7 +12,7 @@ import Body from './components/HomePage/Body';
 import CategoryIcons from './components/HomePage/CategoryIcons';
 import HomeContent from './components/HomePage/HomeContent';
 import AuctionDetails from './components/AuctionPage/AuctionDetails';
-import CategoryAuctions from './components/CategoryAuctions';
+import CategoryAuctions from './components/CategoryPage/CategoryAuctions';
 import { UserProvider } from './UserContext';
 import './App.css';
 
