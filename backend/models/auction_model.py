@@ -94,8 +94,6 @@ def delete_auction(auction_id):
             cursor.close()
             connection.close()
 
-from datetime import datetime, timezone  # Import timezone explicitly
-
 def get_auction_details(auction_id, base_url):
     connection = get_db_connection()
     if connection:
