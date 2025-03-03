@@ -1,6 +1,5 @@
-// src/components/CategoryAuctions.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './HomePage/HomePage_css/Body.css';
 
 function CategoryAuctions() {
@@ -8,6 +7,7 @@ function CategoryAuctions() {
   const [auctions, setAuctions] = useState([]); // State to store auction items
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const navigate = useNavigate(); // For navigation
 
   useEffect(() => {
     // Fetch auctions for the specific category
@@ -45,7 +45,12 @@ function CategoryAuctions() {
       <div className="item-list">
         {auctions.length > 0 ? (
           auctions.map((item) => (
-            <div key={item.id} className="item-card">
+            <div
+              key={item.id}
+              className="item-card"
+              onClick={() => navigate(`/auction/${item.id}`)} // Navigate to auction details page
+              style={{ cursor: 'pointer' }} // Change cursor to pointer
+            >
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <p>Trenutna cijena: ${item.current_price}</p>
