@@ -2,7 +2,7 @@
 from flask import Blueprint, request, jsonify, session
 from models.user_model import register_user, login_user, get_user_profile, check_auth_status
 
-user_bp = Blueprint('auth', __name__)
+user_bp = Blueprint('user', __name__)
 
 @user_bp.route('/api/register', methods=['POST'])
 def register():

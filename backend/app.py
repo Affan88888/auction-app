@@ -5,6 +5,8 @@ from config import UPLOAD_FOLDER, SECRET_KEY
 from routes.user_routes import user_bp
 from routes.auction_routes import auction_bp
 from routes.bids_routes import bid_bp
+from routes.categories_routes import categories_bp
+from routes.search_routes import search_bp
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -25,6 +27,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.register_blueprint(user_bp)
 app.register_blueprint(auction_bp)
 app.register_blueprint(bid_bp)
+app.register_blueprint(categories_bp)
+app.register_blueprint(search_bp)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
