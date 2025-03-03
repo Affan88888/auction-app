@@ -13,7 +13,7 @@ import CategoryIcons from './components/HomePage/CategoryIcons';
 import HomeContent from './components/HomePage/HomeContent';
 import AuctionDetails from './components/AuctionPage/AuctionDetails';
 import CategoryAuctions from './components/CategoryPage/CategoryAuctions';
-import SearchResults from './components/SearchResults';
+import SearchResults from './components/SearchPage/SearchResults';
 import { UserProvider } from './UserContext';
 import './App.css';
 

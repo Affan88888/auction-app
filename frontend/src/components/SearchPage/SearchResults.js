@@ -1,7 +1,7 @@
 // src/components/SearchResults.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './HomePage/HomePage_css/Body.css'; // Reuse styles from Body.js
+import '../HomePage/HomePage_css/Body.css'; // Reuse styles from Body.js
 
 function SearchResults() {
   const { query } = useParams(); // Get the search query from the URL
