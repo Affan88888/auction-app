@@ -1,9 +1,10 @@
-// src/components/SearchBar.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HomePage_css/SearchBar.css'; // Optional: Add styles for the SearchBar
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
@@ -11,8 +12,12 @@ function SearchBar() {
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent page reload
-    console.log('Searching for:', searchTerm); // Replace this with actual search logic later
-    // You can integrate this with your backend API to fetch filtered results
+
+    if (searchTerm.trim()) {
+      navigate(`/search/${encodeURIComponent(searchTerm)}`); // Redirect to search results page
+    } else {
+      alert('Unesite pojam za pretragu.'); // Prompt user to enter a search term
+    }
   };
 
   return (

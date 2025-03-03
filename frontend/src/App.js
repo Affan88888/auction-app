@@ -13,6 +13,7 @@ import CategoryIcons from './components/HomePage/CategoryIcons';
 import HomeContent from './components/HomePage/HomeContent';
 import AuctionDetails from './components/AuctionPage/AuctionDetails';
 import CategoryAuctions from './components/CategoryPage/CategoryAuctions';
+import SearchResults from './components/SearchResults';
 import { UserProvider } from './UserContext';
 import './App.css';
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="/admin-stranica" element={<NapraviAukciju />} />
             <Route path="/auction/:id" element={<AuctionDetails />} />
             <Route path="/:categoryName" element={<CategoryAuctions />} />
+            <Route path="/search/:query" element={<SearchResults />} />
           </Routes>
           <Footer />
         </div>
