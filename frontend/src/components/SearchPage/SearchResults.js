@@ -54,16 +54,16 @@ function SearchResults() {
             >
               <h3>{item.title}</h3>
               <p>{item.description}</p>
-              <p>Trenutna cijena: ${item.starting_price}</p>
+              <p>Trenutna cijena: ${item.current_price}</p>
               {/* Display main image */}
-              {item.images && item.images.length > 0 ? (
+              {item.main_image_url ? (
                 <img
-                  src={item.images[0]} // Show the first image
+                  src={item.main_image_url}
                   alt={item.title}
                   className="item-image"
                 />
               ) : (
-                <p>Nema slika za ovu aukciju.</p>
+                <p>Nema glavne slike za ovu aukciju.</p>
               )}
             </div>
           ))
