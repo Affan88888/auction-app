@@ -51,14 +51,23 @@ function AuctionDetails() {
       const intervalId = setInterval(() => {
         const now = new Date().getTime();
         const timeLeft = endDate - now;
+
         if (timeLeft > 0) {
           // Calculate total hours, minutes, and seconds
           const totalSeconds = Math.floor(timeLeft / 1000);
           const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
           const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
           const seconds = String(totalSeconds % 60).padStart(2, '0');
+
           // Format the countdown as HH:MM:SS
           setCountdown(`${hours}:${minutes}:${seconds}`);
+
+          // Show countdown only if less than 24 hours remain
+          if (timeLeft < 24 * 60 * 60 * 1000) {
+            setShowCountdown(true);
+          } else {
+            setShowCountdown(false);
+          }
         } else {
           // Auction has ended
           setCountdown('Aukcija je završena!');
@@ -105,7 +114,7 @@ function AuctionDetails() {
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Trenutna cijena:</strong> ${auction.current_price}</p>
       <p><strong>Datum završetka:</strong> {new Date(auction.end_date).toLocaleString()}</p>
-      {/* Show countdown timer or "Aukcija je završena!" */}
+      {/* Show countdown timer only if less than 24 hours remain */}
       {(auction.has_ended || auctionEnded) ? (
         <p className="countdown-timer"><strong>Aukcija je završena!</strong></p>
       ) : (
